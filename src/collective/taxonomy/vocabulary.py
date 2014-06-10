@@ -68,17 +68,32 @@ class Vocabulary(object):
     def getTerms(self):
         results = []
         identifiers = set()
+        for (path, identifier) in self.data.items():
+            if identifier in identifiers:
+                continue
+            identifiers.add(identifier)
+            term = SimpleTerm(value=identifier,
+                              token=identifier,
+                              title=self.message(identifier, path))
+            results.append(term)
+
+        return results
+
+    def search(self, query):
+        results = []
+        identifiers = set()
 
         for (path, identifier) in self.data.items():
             if identifier in identifiers:
                 continue
-
-            identifiers.add(identifier)
-
-            term = SimpleTerm(value=identifier,
-                              title=self.message(identifier, path))
-            results.append(term)
-
+            if query.lower() in path.lower():
+                identifiers.add(identifier)
+                term = SimpleTerm(value=identifier,
+#something needs debugging here as rendered messages are wrong                              
+#                                  title=self.message(identifier, path))
+                                  title=self.message(path),
+                                  token=identifier)
+                results.append(term)
         return results
 
 

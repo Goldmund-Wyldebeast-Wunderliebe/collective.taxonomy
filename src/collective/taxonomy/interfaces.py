@@ -96,6 +96,10 @@ class ITaxonomyForm(Interface):
         vocabulary='collective.taxonomy.permissions'
     )
 
+    has_query_widget = schema.Bool(
+        title=_(u"Has query widget"),
+        required=False
+    )
 
 class ITaxonomyView(Interface):
 

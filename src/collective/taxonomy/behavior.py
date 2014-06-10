@@ -44,7 +44,7 @@ class TaxonomyBehavior(Persistent):
     def __init__(self, name, title, description, field_title,
                  field_description, is_required=False,
                  is_single_select=False, write_permission='',
-                 default_language='en'):
+                 default_language='en', has_query_widget=False):
         self.name = name
         self.title = _(title)
         self.description = _(description)
@@ -55,6 +55,7 @@ class TaxonomyBehavior(Persistent):
         self.is_required = is_required
         self.write_permission = write_permission
         self.default_language = default_language
+        self.has_query_widget = has_query_widget
 
     def deactivateSearchable(self):
         registry = getUtility(IRegistry)
@@ -178,12 +179,25 @@ class TaxonomyBehavior(Persistent):
                       fields=[self.field_name])]
         )
 
+#        if hasattr(self, 'is_single_select') and not self.is_single_select:
+#            schemaclass.setTaggedValue(
+#                WIDGETS_KEY,
+#                {self.field_name:
+#                 'collective.taxonomy.widget.TaxonomySelectFieldWidget'}
+#            )
         if hasattr(self, 'is_single_select') and not self.is_single_select:
-            schemaclass.setTaggedValue(
-                WIDGETS_KEY,
-                {self.field_name:
-                 'collective.taxonomy.widget.TaxonomySelectFieldWidget'}
-            )
+            if hasattr(self, 'has_query_widget') and self.has_query_widget:
+                schemaclass.setTaggedValue(
+                    WIDGETS_KEY,
+                    {self.field_name:
+                     'plone.formwidget.autocomplete.widget.AutocompleteMultiFieldWidget'}
+                )
+            else:
+                schemaclass.setTaggedValue(
+                    WIDGETS_KEY,
+                    {self.field_name:
+                     'collective.taxonomy.widget.TaxonomySelectFieldWidget'}
+                )
 
         alsoProvides(schemaclass, IFormFieldProvider)
         return schemaclass
