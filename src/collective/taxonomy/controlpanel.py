@@ -20,7 +20,7 @@ from z3c.form.interfaces import HIDDEN_MODE
 
 from .i18n import MessageFactory as _
 from .factory import registerTaxonomy
-from .interfaces import ITaxonomy, ITaxonomySettings, ITaxonomyForm
+from .interfaces import ITaxonomy, ITaxonomySettings, ITaxonomyForm, ITaxonomyImportForm
 from .exportimport import TaxonomyImportExportAdapter
 
 
@@ -80,6 +80,21 @@ class TaxonomySettingsControlPanel(ControlPanelForm):
             self.context.REQUEST.RESPONSE.redirect(
                 self.context.portal_url() +
                 '/@@taxonomy-edit-data?form.widgets.taxonomy=' +
+                data.get('taxonomies')[0]
+            )
+        else:
+            IStatusMessage(self.context.REQUEST).addStatusMessage(
+                _(u"Please select one taxonomy."), type="info")
+
+    @formlib.action(
+        _(u'label_import_data_taxonomy', default=u'Import taxonomy data'),
+        name=u'import_data_taxonomy'
+    )
+    def handle_import_taxonomy_data_action(self, action, data):
+        if len(data.get('taxonomies', [])) > 0:
+            self.context.REQUEST.RESPONSE.redirect(
+                self.context.portal_url() +
+                '/@@taxonomy-import-data?form.widgets.taxonomy=' +
                 data.get('taxonomies')[0]
             )
         else:
