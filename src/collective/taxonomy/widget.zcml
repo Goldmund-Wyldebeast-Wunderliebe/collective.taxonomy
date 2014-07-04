@@ -21,7 +21,7 @@
       mode="input"
       widget=".interfaces.ITaxonomySelectWidget"
       layer="z3c.form.interfaces.IFormLayer"
-      template="widget_input.pt"
+      template="widget_input_fancytree.pt"
       />
 
 </configure>

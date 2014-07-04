@@ -20,7 +20,7 @@ from z3c.form.interfaces import HIDDEN_MODE
 
 from .i18n import MessageFactory as _
 from .factory import registerTaxonomy
-from .interfaces import ITaxonomy, ITaxonomySettings, ITaxonomyForm, ITaxonomyImportForm
+from .interfaces import ITaxonomy, ITaxonomySettings, ITaxonomyForm
 from .exportimport import TaxonomyImportExportAdapter
 
 

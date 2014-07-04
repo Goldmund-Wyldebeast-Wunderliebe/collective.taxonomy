@@ -1,0 +1,3 @@
+<div class="fancytree">
+  <tal:block tal:content="structure python:view.getHTML(view.getData())"/>
+</div>

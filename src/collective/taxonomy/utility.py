@@ -168,6 +168,9 @@ class Taxonomy(SimpleItem):
             return ''
 
         path = self.inverted_data[target_language][msgid]
+        #we may have non-ascii now
+        if not isinstance(path, unicode):
+            path = path.decode('utf-8')
         pretty_path = path[1:].replace('/', u' » ')
 
         return pretty_path
