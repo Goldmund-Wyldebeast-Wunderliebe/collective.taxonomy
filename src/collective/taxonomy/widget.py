@@ -34,12 +34,12 @@ class TaxonomySelectWidget(OrderedSelectWidget):
             return ''
         li_nodes = []
         for child in children:
-            print child['key'], child['title']
+            children_html = self.getHTML(child['children'])
             if child['key'] in self.values:
                 li_nodes.append(u'<li class="selected" id="{}">{}{}</li>'.format(child['key'], child['title'].decode('utf-8'), self.getHTML(child['children'])))
             else:
-                li_nodes.append(u'<li id="{}">{}{}</li>'.format(child['key'], child['title'] if isinstance(child['title'], unicode) else child['title'].decode('utf-8'), self.getHTML(child['children'])))
-        return '<ul>{}</ul>'.format('\n'.join(li_nodes))
+                li_nodes.append(u'<li id="{}">{}{}</li>'.format(child['key'], child['title'] if isinstance(child['title'], unicode) else child['title'].decode('utf-8'), children_html))
+        return u'<ul>{}</ul>'.format(u'\n'.join(li_nodes))
     
 
 @zope.component.adapter(zope.schema.interfaces.ISequence,
