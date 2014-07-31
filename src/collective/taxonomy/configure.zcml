@@ -106,6 +106,11 @@
       file="jquery.fancytree.js"
       layer=".interfaces.IBrowserLayer"
       />
+  <browser:resource
+      name="icons.gif"
+      file="icons.gif"
+      layer=".interfaces.IBrowserLayer"
+      />
 
   <browser:resource
       name="dynatree.jquery.js"
