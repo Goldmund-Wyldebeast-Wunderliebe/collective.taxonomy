@@ -1,3 +1,3 @@
-<div class="fancytree">
+<div class="fancytree" id="testing_testing" tal:attributes="name view/name">
   <tal:block tal:content="structure python:view.getHTML(view.getData())"/>
 </div>
