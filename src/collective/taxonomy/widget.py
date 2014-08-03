@@ -35,7 +35,7 @@ class TaxonomySelectWidget(OrderedSelectWidget):
         li_nodes = []
         for child in children:
             children_html = self.getHTML(child['children'])
-            if child['key'] in self.values:
+            if child['key'] in self.value:
                 li_nodes.append(u'<li class="selected" id="{}">{}{}</li>'.format(child['key'], child['title'].decode('utf-8'), self.getHTML(child['children'])))
             else:
                 li_nodes.append(u'<li id="{}">{}{}</li>'.format(child['key'], child['title'] if isinstance(child['title'], unicode) else child['title'].decode('utf-8'), children_html))
