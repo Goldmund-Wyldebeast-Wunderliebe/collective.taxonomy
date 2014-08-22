@@ -2904,6 +2904,17 @@ $.extend(Fancytree.prototype,
         // Update CSS classes
         this.nodeRenderStatus(ctx);
     },
+    /*Helper recursive function to return true if any of children is selected*/
+    isChildSelected: function(ctx) {
+        var return_value = false;
+        if ($(ctx).attr('selected')) return true;
+        if (ctx.children) {
+          for(i=0; i<ctx.children.length; i++) {
+             if (ctx.tree.isChildSelected(ctx.children[i])) return true;
+          };
+        };  
+        return false;
+    },
     /** Update element classes according to node state.
      * @param {EventData} ctx
      */
@@ -2965,6 +2976,9 @@ $.extend(Fancytree.prototype,
         }
         if( hasChildren !== false ){
             cnList.push(cn.hasChildren);
+            if( tree.isChildSelected(node) !== false ){
+                cnList.push('fancytree-child-selected');
+            }
         }
         // TODO: required?
         if( isLastSib ){
@@ -4105,7 +4119,7 @@ $.extend($.ui.fancytree,
 
 }(jQuery, window, document));
 
-$( document ).ready(function() {
+$( window ).load(function() {
         $("#form").submit(function() {
             // Render hidden <input> elements for active and selected nodes
             var form = this;
@@ -4124,5 +4138,14 @@ $( document ).ready(function() {
                   
                 })
               })  
-        })
+        });
+        //adding extra class to indicate nodes with selected children        
+        $('.fancytree span.fancytree-selected').each(  
+                 function(item ){
+                    var node = $(this);
+                    var parents = node.parentsUntil('.fancytree-container', 'li');
+                    parents.children([0]).addClass('fancytree-child-selected');
+                    }
+                );
+
 })
