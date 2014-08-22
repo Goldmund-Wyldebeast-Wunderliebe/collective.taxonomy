@@ -2906,10 +2906,9 @@ $.extend(Fancytree.prototype,
     },
     /*Helper recursive function to return true if any of children is selected*/
     isChildSelected: function(ctx) {
-        var return_value = false;
         if ($(ctx).attr('selected')) return true;
         if (ctx.children) {
-          for(i=0; i<ctx.children.length; i++) {
+          for(var i=0; i<ctx.children.length; i++) {
              if (ctx.tree.isChildSelected(ctx.children[i])) return true;
           };
         };  
