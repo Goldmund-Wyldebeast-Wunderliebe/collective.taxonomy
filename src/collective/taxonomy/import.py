@@ -31,6 +31,11 @@ class IImportForm(Interface):
         default = 2,
         required=True
     )
+    index_column = schema.Int(
+        title=_(u"Column with index number to be attached"),
+        description=_(u""),
+        required=False
+    )
     taxonomy = schema.TextLine(
         title=_(u"Modified taxonomy"),
         description=_(u""),
@@ -57,6 +62,7 @@ class TaxonomyImportForm(form.Form):
         first_column = data['first_column']
         first_row = data['first_row']
         taxonomy_name = data['taxonomy']
+        index_column = data['index_column']
 
         portal = api.portal.get()
         sm = portal.getSiteManager()
@@ -68,18 +74,21 @@ class TaxonomyImportForm(form.Form):
         rows = csv.reader(import_file.open(), delimiter=';', quotechar='"')
         counter = 1
         taxonomy_values = []
+        index_mapper = {}
         while first_row>1:
             rows.next()
             first_row -= 1
-
         for row in rows:
+            index = '{0} - '.format(row[index_column] if index_column is not None else '')
             values = filter(None, row[(first_column-1):])
             #newline and '/' characters are breaking taxonomy storage
             values = [v.replace('\n', ' ').replace('/', '|') for v in values]
             if values:
+                #I'm adding tuples to the mapper. Per column, per value
                 print values
-                print '/' + '/'.join(values)
-                taxonomy_values.append('/' + '/'.join(values))
+                index_mapper[(len(values)-1, values[-1])] = '{0}{1}'.format(index, values[-1])
+                formatted_values = [index_mapper[(v_tuple[0], v_tuple[1])] for v_tuple in enumerate(values)]
+                taxonomy_values.append('/'.join(formatted_values))
 
         language = taxonomy.default_language
         taxonomy.data[language] = OOBTree()
